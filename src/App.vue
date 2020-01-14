@@ -1,15 +1,6 @@
 <template>
   <div id="app">
-    <hello-world >
-      <template v-slot:header="slotProps">
-        {{ slotProps.user.lastName }}
-      </template>
-      <template #footer>
-        <div>
-          Footer
-        </div>
-      </template>
-    </hello-world>
+        <counter></counter>
         <section class="todoapp">
         <header class="header">
           <input
@@ -23,25 +14,16 @@
         <section class="main">
           <input id="toggle-all" class="toggle-all" type="checkbox" />
           <label for="toggle-all">Mark all as complete</label>
-          <todo-list :todos="relevantTodos" @remove-todo="removeTodo" @submit-update="submitUpdate"></todo-list>
+          <todo-list :todos="relevantTodos"></todo-list>
         </section>
         <footer class="footer">
           <span class="todo-count">
             <strong>{{itemsLeft}}</strong> items left
           </span>
           <ul class="filters">
-            <li>
-              <a :class="{ selected: todosFilter === 'All'}" @click="setFilter('All')">All</a>
+            <li v-for="(filter, index) in filters" :key="index">
+              <a :class="{ selected: todosFilter === filter}" @click="setFilter(filter)">{{ filter }}</a>
             </li>
-            <li>
-              <a :class="{ selected: todosFilter === 'Active'}" @click="setFilter('Active')">Active</a>
-            </li>
-            <li>
-              <a
-                :class="{ selected: todosFilter === 'Completed'}"
-                @click="setFilter('Completed')"
-              >Completed</a>
-            </li>a
           </ul>
           <button class="clear-completed" @click="removeCompleted">Clear completed</button>
         </footer>
@@ -52,74 +34,48 @@
           Styling credits to
           <a href="http://todomvc.com">TodoMVC</a>
         </p>
+        <button @click="$store.dispatch('doWeirdStuff')">IncrementByTwo</button>
       </footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld';
 import TodoList from './components/TodoList';
-
+import Counter from './components/Counter';
+import { allFilters } from './store/todosStore'
+import { mapGetters, mapActions } from 'vuex';
 export default {
+  name: "App",
   data() {
       return {
-        todos: [],
-        newTodo: "",
-        todosFilter: "All"
+        filters: allFilters,
+        newTodo: ""
     }
   },
   created() {
-    fetch("https://api.myjson.com/bins/jiwtq")
-      .then(response => response.json())
-      .then(json => (this.todos = json.data));
+    this.$store.dispatch('fetchTodos')
   },
   computed: {
-    itemsLeft() {
-      return this.activeTodos.length;
-    },
-    activeTodos() {
-      return this.todos.filter(todo => !todo.completed);
-    },
-    completedTodos() {
-      return this.todos.filter(todo => todo.completed);
-    },
-    relevantTodos() {
-      if (this.todosFilter === "Active") {
-        return this.activeTodos;
-      }
-      if (this.todosFilter === "Completed") {
-        return this.completedTodos;
-      }
-      return this.todos;
-    }
+    ...mapGetters([
+      'todosFilter',
+      'todos',
+      'relevantTodos',
+      'itemsLeft'
+    ])
   },
   methods: {
-    updateMessage(event) {
-      this.title = event;
-    },
     submitTodo() {
-      const lastTodoId = this.todos[this.todos.length - 1].id;
-      this.todos.push({ id: lastTodoId + 1, todo: this.newTodo });
+      this.$store.dispatch('submitTodo', this.newTodo)
       this.newTodo = "";
     },
-    removeTodo(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id);
-    },
-    submitUpdate({ id, editingTodo }) {
-      this.todos = this.todos.map(todo =>
-        todo.id === id ? { ...todo, todo: editingTodo } : todo
-      );
-    },
-    setFilter(filter) {
-      this.todosFilter = filter;
-    },
-    removeCompleted() {
-      this.todos = this.activeTodos;
-    }
+    ...mapActions([
+      'setFilter',
+      'removeCompleted'
+    ])
   },
   components: {
       TodoList,
-      HelloWorld
+      Counter
   }
 };
 </script>

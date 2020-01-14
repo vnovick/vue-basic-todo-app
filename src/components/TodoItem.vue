@@ -1,9 +1,9 @@
 <template>
   <li :class="{ completed: item.completed, editing: editingTodoId === item.id }">
     <div class="view" @dblclick="setEditing(item.id)">
-      <input class="toggle" type="checkbox" v-model="item.completed" />
+      <input class="toggle" type="checkbox" v-model="isCompleted" />
       <label>{{item.todo}}</label>
-      <button class="destroy" @click="$emit('remove-todo', item.id)"></button>
+      <button class="destroy" @click="removeTodo(item.id)"></button>
     </div>
     <input class="edit" @keyup.enter="submitUpdate(item.id)" v-model="editingTodo" />
   </li>
@@ -14,8 +14,22 @@ export default {
   data() {
     return {
       editingTodoId: null,
-      editingTodo: ""
+      editingTodo: "",
+      checked: false
     };
+  },
+  computed: {
+    isCompleted: {
+      get(){
+        return this.item.completed
+      },
+      set(checked){
+        this.$store.dispatch('setCompleted', {
+          id: this.item.id,
+          checked
+        })
+      }
+    }
   },
   props: {
     item: Object
@@ -25,9 +39,12 @@ export default {
       this.editingTodoId = id;
     },
     submitUpdate(id) {
-      this.$emit("submit-update", { id, editingTodo: this.editingTodo });
+      this.$store.dispatch('submitUpdate', { id, editingTodo: this.editingTodo})
       this.editingTodoId = null;
       this.editingTodo = "";
+    },
+    removeTodo(id){
+      this.$store.dispatch('removeTodo', id)
     }
   }
 };
