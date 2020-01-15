@@ -1,88 +1,83 @@
 <template>
   <div id="app">
-        <hello-world></hello-world>
-        <section class="todoapp">
-        <header class="header">
-          <useful-component :level="1">
-            Hey there
-          </useful-component>
-          <input
-            v-model="newTodo"
-            class="new-todo"
-            placeholder="What needs to be done?"
-            autofocus
-            @keyup.enter="submitTodo"
-          />
-        </header>
-        <section class="main">
-          <input id="toggle-all" class="toggle-all" type="checkbox" />
-          <label for="toggle-all">Mark all as complete</label>
-          <todo-list :todos="relevantTodos"></todo-list>
-        </section>
-        <footer class="footer">
-          <span class="todo-count">
-            <strong>{{itemsLeft}}</strong> items left
-          </span>
-          <ul class="filters">
-            <li v-for="(filter, index) in filters" :key="index">
-              <a :class="{ selected: todosFilter === filter}" @click="setFilter(filter)">{{ filter }}</a>
-            </li>
-          </ul>
-          <button class="clear-completed" @click="removeCompleted">Clear completed</button>
-        </footer>
+    <hello-world></hello-world>
+    <section class="todoapp">
+      <header class="header">
+        <useful-component :level="1">Hey there</useful-component>
+        <input
+          v-model="newTodo"
+          class="new-todo"
+          placeholder="What needs to be done?"
+          autofocus
+          @keyup.enter="submitTodo"
+        />
+      </header>
+      <section class="main">
+        <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <label for="toggle-all">Mark all as complete</label>
+        <todo-list :todos="relevantTodos"></todo-list>
       </section>
-      <footer class="info">
-        <p>Double-click to edit a todo</p>
-        <p>
-          Styling credits to
-          <a href="http://todomvc.com">TodoMVC</a>
-        </p>
-        <button @click="$store.dispatch('doWeirdStuff')">IncrementByTwo</button>
+      <footer class="footer">
+        <span class="todo-count">
+          <strong>{{itemsLeft}}</strong> items left
+        </span>
+        <ul class="filters">
+          <li v-for="(filter, index) in filters" :key="index">
+            <a :class="{ selected: todosFilter === filter}" @click="setFilter(filter)">{{ filter }}</a>
+          </li>
+        </ul>
+        <button class="clear-completed" @click="removeCompleted">Clear completed</button>
       </footer>
+    </section>
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>
+        Styling credits to
+        <a href="http://todomvc.com">TodoMVC</a>
+      </p>
+      <button @click="$store.dispatch('doWeirdStuff')">IncrementByTwo</button>
+    </footer>
   </div>
 </template>
 
 <script>
-import TodoList from './components/TodoList';
+import TodoList from "./components/TodoList";
 // import Counter from './components/Counter';
-import HelloWorld from './components/HelloWorld';
-import { allFilters } from './store/todosStore'
-import { mapGetters, mapActions } from 'vuex';
-import UsefulComponent from './components/UsefulComponent'
+import HelloWorld from "./components/HelloWorld";
+import { allFilters } from "./store/todosStore";
+import { mapGetters, mapActions } from "vuex";
+import UsefulComponent from "./components/UsefulComponent";
 export default {
   name: "App",
   data() {
-      return {
-        filters: allFilters,
-        newTodo: ""
-    }
+    return {
+      filters: allFilters,
+      newTodo: ""
+    };
   },
   created() {
-    this.$store.dispatch('todosStore/fetchTodos')
+    this.$store.dispatch("todosStore/fetchTodos");
   },
   computed: {
-    ...mapGetters('todosStore', [
-      'todosFilter',
-      'todos',
-      'relevantTodos',
-      'itemsLeft'
+    ...mapGetters("todosStore", [
+      "todosFilter",
+      "todos",
+      "relevantTodos",
+      "itemsLeft"
     ])
   },
   methods: {
     submitTodo() {
-      this.$store.dispatch('todosStore/submitTodo', this.newTodo)
+      this.$store.dispatch("todosStore/submitTodo", this.newTodo);
       this.newTodo = "";
     },
-    ...mapActions('todosStore',[
-      'setFilter',
-      'removeCompleted'
-    ])
+    ...mapActions("todosStore", ["setFilter", "removeCompleted"])
   },
   components: {
-      TodoList,
-      // Counter,
-      UsefulComponent,
-      HelloWorld
+    TodoList,
+    // Counter,
+    UsefulComponent,
+    HelloWorld
   }
 };
 </script>
@@ -461,5 +456,4 @@ html .clear-completed:active {
     bottom: 10px;
   }
 }
-
 </style>
