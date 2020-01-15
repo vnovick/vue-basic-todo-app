@@ -3,7 +3,7 @@
     <hello-world></hello-world>
     <section class="todoapp">
       <header class="header">
-        <useful-component :level="1">Hey there</useful-component>
+        <vue-three-counter></vue-three-counter>
         <input
           v-model="newTodo"
           class="new-todo"
@@ -41,12 +41,13 @@
 </template>
 
 <script>
+
 import TodoList from "./components/TodoList";
-// import Counter from './components/Counter';
+import VueThreeCounter from './components/VueThreeCounter';
 import HelloWorld from "./components/HelloWorld";
 import { allFilters } from "./store/todosStore";
 import { mapGetters, mapActions } from "vuex";
-import UsefulComponent from "./components/UsefulComponent";
+// import UsefulComponent from "./components/UsefulComponent";
 export default {
   name: "App",
   data() {
@@ -75,8 +76,8 @@ export default {
   },
   components: {
     TodoList,
-    // Counter,
-    UsefulComponent,
+    VueThreeCounter,
+    // UsefulComponent,
     HelloWorld
   }
 };
