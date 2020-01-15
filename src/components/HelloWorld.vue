@@ -3,17 +3,17 @@
     <header>
       <slot name="header" :user="user">{{user.firstName}}</slot>
       <input type="text" v-model="html">
-      <div v-html="html"></div>
+      <div></div>
     </header>
     <section>
-      <button @click="toggleShow">DO cool stuff</button>
+      <button class="buttonSomething" @click="toggleShow">{{ caption}}</button>
       <transition
         @before-enter="beforeEnter"
         name="custom-classes-transition"
         enter-active-class="animated tada"
         leave-active-class="animated hinge"
       >
-        <p v-if="show">hello</p>
+        <p v-if="show" class="hello-caption">hello</p>
       </transition>
       <slot></slot>
     </section>
@@ -38,6 +38,7 @@ export default {
   data(){
     return {
       html: '',
+      caption: 'Show Hello',
       myarg: 'other.prevent',
       show: false,
       user: {
@@ -51,7 +52,7 @@ export default {
       console.log("Gonna animate")
     },
     toggleShow(){
-      this.$store.getters
+      this.caption = 'Hide Hello'
       this.show = !this.show
     }
   }

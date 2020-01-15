@@ -5,6 +5,7 @@
       v-for="(item) in todos"
       :key="item.id"
       :item="item"
+      @dummy-remove="dummyRemove"
     ></todo-item>
   </ul>
   </span>
@@ -20,6 +21,9 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    dummyRemove: () => {}
   },
   components: {
     TodoItem
