@@ -1,20 +1,12 @@
 import { uuid } from 'uuidv4'
 import apiService from '../services/apiService'
 
-export const mutationTypes = {
-    COUNTER_UPDATE: 'COUNTER_UPDATE'
-  }
-  
-  export const actionTypes = {
-    INCREMENT: 'increment',
-    DECREMENT: 'decrement'
-  }
-  
+
 export const allFilters = ['All', "Active", 'Completed']
 
 const todoStore = {
+    namespaced: true,
     state: {
-        counter: 0,
         todos: [],
         activeFilter: 'All'
       },
@@ -27,13 +19,6 @@ const todoStore = {
         },
         itemsLeft(state, getters){
           return getters.activeTodos.length;
-        },
-        // ------------ counter ---------
-        counter(state){
-          return state.counter
-        },
-        counterPower: (state, getters) => (power) => {
-          return Math.pow(getters.counter, power)
         },
         activeTodos(state) {
           return state.todos.filter(todo => !todo.completed);
@@ -52,9 +37,6 @@ const todoStore = {
         }
       },
       mutations: {
-        [mutationTypes.COUNTER_UPDATE](state, numToChange){
-          state.counter = state.counter + numToChange
-        },
         submitNewTodo(state, newTodo){
           state.todos.push({
             id: uuid(),
@@ -86,21 +68,7 @@ const todoStore = {
       actions: {
         async fetchTodos({ commit }) {
           const jsonResponse = await apiService.getTodos()
-          console.log(jsonResponse)
           commit('setTodos', jsonResponse.data)
-        },
-        async doWeirdStuff({ dispatch, commit }){
-          await dispatch('incrementCounterByTwo')
-          commit(mutationTypes.COUNTER_UPDATE, 100)
-        },
-        incrementCounterByTwo({ dispatch, commit }) {
-          return new Promise(resolve => {
-            commit(mutationTypes.COUNTER_UPDATE, 1)
-            setTimeout(() => {
-              dispatch(actionTypes.DECREMENT, 2)
-              resolve(true)
-            }, 1000);
-          })
         },
         setFilter({ commit}, payload){
           commit('setFilter', payload)
@@ -120,13 +88,6 @@ const todoStore = {
         setCompleted({ commit }, payload) {
           commit('setCompleted', payload)
         },
-        [actionTypes.INCREMENT](context, byNum){
-          context.commit(mutationTypes.COUNTER_UPDATE, byNum)
-    
-        },
-        [actionTypes.DECREMENT](context, byNum){
-          context.commit(mutationTypes.COUNTER_UPDATE, byNum * -1)
-        }
       }
 }
 export default todoStore

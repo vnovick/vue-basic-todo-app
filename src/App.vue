@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-        <counter></counter>
+        <hello-world></hello-world>
         <section class="todoapp">
         <header class="header">
+          <useful-component :level="1">
+            Hey there
+          </useful-component>
           <input
             v-model="newTodo"
             class="new-todo"
@@ -41,9 +44,11 @@
 
 <script>
 import TodoList from './components/TodoList';
-import Counter from './components/Counter';
+// import Counter from './components/Counter';
+import HelloWorld from './components/HelloWorld';
 import { allFilters } from './store/todosStore'
 import { mapGetters, mapActions } from 'vuex';
+import UsefulComponent from './components/UsefulComponent'
 export default {
   name: "App",
   data() {
@@ -53,10 +58,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchTodos')
+    this.$store.dispatch('todosStore/fetchTodos')
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('todosStore', [
       'todosFilter',
       'todos',
       'relevantTodos',
@@ -65,17 +70,19 @@ export default {
   },
   methods: {
     submitTodo() {
-      this.$store.dispatch('submitTodo', this.newTodo)
+      this.$store.dispatch('todosStore/submitTodo', this.newTodo)
       this.newTodo = "";
     },
-    ...mapActions([
+    ...mapActions('todosStore',[
       'setFilter',
       'removeCompleted'
     ])
   },
   components: {
       TodoList,
-      Counter
+      // Counter,
+      UsefulComponent,
+      HelloWorld
   }
 };
 </script>

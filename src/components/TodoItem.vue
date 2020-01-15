@@ -39,12 +39,12 @@ export default {
       this.editingTodoId = id;
     },
     submitUpdate(id) {
-      this.$store.dispatch('submitUpdate', { id, editingTodo: this.editingTodo})
+      this.$store.dispatch('todosStore/submitUpdate', { id, editingTodo: this.editingTodo})
       this.editingTodoId = null;
       this.editingTodo = "";
     },
     removeTodo(id){
-      this.$store.dispatch('removeTodo', id)
+      this.$store.dispatch('todosStore/removeTodo', id)
     }
   }
 };

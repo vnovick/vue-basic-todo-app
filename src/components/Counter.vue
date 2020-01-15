@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import { actionTypes } from '../store';
+    import { actionTypes } from '../store/counter';
 
     export default {
         computed: {

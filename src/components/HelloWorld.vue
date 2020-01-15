@@ -2,11 +2,23 @@
   <div class="hello">
     <header>
       <slot name="header" :user="user">{{user.firstName}}</slot>
+      <input type="text" v-model="html">
+      <div v-html="html"></div>
     </header>
     <section>
+      <button @click="toggleShow">DO cool stuff</button>
+      <transition
+        @before-enter="beforeEnter"
+        name="custom-classes-transition"
+        enter-active-class="animated tada"
+        leave-active-class="animated hinge"
+      >
+        <p v-if="show">hello</p>
+      </transition>
       <slot></slot>
     </section>
     <footer>
+      <input type="text" ref="otherInput"/>
       <slot name="footer">Default footer</slot>
     </footer>
   </div>
@@ -18,14 +30,29 @@ export default {
   computed: {
     fullName(){
       return `${this.user.firstName} ${this.user.lastName}`
+    },
+    otherInput() {
+      return this.$refs.otherInput
     }
   },
   data(){
     return {
+      html: '',
+      myarg: 'other.prevent',
+      show: false,
       user: {
         firstName: 'Vladimir',
         lastName: 'Novick'
       }
+    }
+  },
+  methods: {
+    beforeEnter(){
+      console.log("Gonna animate")
+    },
+    toggleShow(){
+      this.$store.getters
+      this.show = !this.show
     }
   }
 }
@@ -46,5 +73,23 @@ li {
 }
 a {
   color: #42b983;
+}
+	
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
