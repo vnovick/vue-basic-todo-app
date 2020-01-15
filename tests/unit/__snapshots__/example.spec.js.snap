@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hello World component test Check if slots are applied 1`] = `
+<div class="hello">
+  <header>
+    <div class="header-test-slot"></div> <input type="text">
+    <div></div>
+  </header>
+  <section><button class="buttonSomething">Show Hello</button>
+    <!---->
+    <div class="default-test-slot"></div>
+  </section>
+  <footer><input type="text">
+    <div class="footer-test-slot"></div>
+  </footer>
+</div>
+`;
+
+exports[`Hello World component test Check that markup is correct 1`] = `
+<div class="hello" msg="new message">
+  <header>Vladimir <input type="text">
+    <div></div>
+  </header>
+  <section><button class="buttonSomething">Show Hello</button>
+    <!---->
+  </section>
+  <footer><input type="text"> Default footer</footer>
+</div>
+`;
+
+exports[`Hello World component test Check that toggleShow button renders correct snapshot 1`] = `
+<div class="hello" msg="new message">
+  <header>Vladimir <input type="text">
+    <div></div>
+  </header>
+  <section><button class="buttonSomething">Hide Hello</button>
+    <p class="hello-caption" name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated hinge">hello</p>
+  </section>
+  <footer><input type="text"> Default footer</footer>
+</div>
+`;

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Todo List spec Component with one todo renders correctly 1`] = `<span><ul class="todo-list"><todo-item-stub item="[object Object]"></todo-item-stub></ul></span>`;
+
+exports[`Todo List spec Empty component renders correctly 1`] = `<span><ul class="todo-list"></ul></span>`;
